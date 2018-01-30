@@ -35,6 +35,12 @@ describe('readImage', function () {
     })
     it('should get at least one file ', function () {
 
+        spyOn(window, 'readImage');
+
+        fileUpload.dispatchEvent(new Event('onchange'));
+
+        expect(window.readImage).toHaveBeenCalled();
+
     })
 
 });
