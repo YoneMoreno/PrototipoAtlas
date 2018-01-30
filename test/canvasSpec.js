@@ -3,6 +3,7 @@ function createCanvas() {
     canvas = document.createElement("canvas");
     canvas.setAttribute("width", "512");
     canvas.setAttribute("height", "512");
+    canvas.setAttribute("id", "canvas");
     body.appendChild(canvas);
     return canvas;
 }
@@ -15,6 +16,7 @@ describe('canvasSpec', function () {
         expect(testCanvas.nodeName).toEqual("CANVAS");
         expect(testCanvas.getAttribute("width")).toEqual("512");
         expect(testCanvas.getAttribute("height")).toEqual("512");
+        expect(testCanvas.getAttribute("id")).toEqual("canvas");
     })
 
 });
