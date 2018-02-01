@@ -12,7 +12,7 @@ ctx = DOM[2];
 function readImage() {
     if ( this.files && this.files[0] ) {
         var FR= getFileReader();
-        var img = new Image();
+        var img = getImage();
         FR.onload = function(e) {
             img.src = e.target.result;
             img.onload = function() {
@@ -41,6 +41,10 @@ function getFileReader() {
     return FR;
 }
 
+function getImage() {
+    return new Image();
+}
+
 describe('readImage', function () {
     it('should get context ', function () {
         DOM = getDOM();
@@ -51,6 +55,11 @@ describe('readImage', function () {
         const FR =  getFileReader();
 
         expect(FR instanceof FileReader).toBe(true);
+    })
+    it('should return an image', function(){
+        const image = getImage();
+
+        expect(image instanceof Image).toBe(true);
     })
     // it('should get at least one file ', function () {
     //
