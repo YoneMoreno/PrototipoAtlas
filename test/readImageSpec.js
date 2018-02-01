@@ -120,12 +120,12 @@ describe('readImage', function () {
         xPos = yPos = 0;
         width = height = 512;
 
-        drawImage(img, xPos, yPos, width, height);
+        const coordinatesOfDrawnImage = drawImage(img, xPos, yPos, width, height);
 
-        expect(xPos).toBe(0);
-        expect(yPos).toBe(0);
-        expect(width).toBe(512);
-        expect(height).toBe(512);
+        expect(coordinatesOfDrawnImage.xPos).toBe(0);
+        expect(coordinatesOfDrawnImage.yPos).toBe(0);
+        expect(coordinatesOfDrawnImage.width).toBe(512);
+        expect(coordinatesOfDrawnImage.height).toBe(512);
 
     })
     it('should prevent loading files when there are none', function () {
