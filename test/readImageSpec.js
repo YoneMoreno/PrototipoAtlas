@@ -11,17 +11,16 @@ canvas = DOM[1];
 ctx = DOM[2];
 
 
-
-
 function readImage() {
     if (isFileToRead(this)) {
         var FR = getFileReader();
         var img = getImage();
         FR.onload = fileReaderOnLoad(img);
-        readBlobAsDataURLToManageItWithHtml(FR,this.files[0]);
+        readBlobAsDataURLToManageItWithHtml(FR, this.files[0]);
     }
     return [this.files, FR, img, ctx];
 }
+
 function fileReaderOnLoad(img) {
     return function (e) {
         setImageSource(img, e);
@@ -35,18 +34,23 @@ function fileReaderOnLoad(img) {
 
 fileUpload.onchange = readImage;
 
+
 function canvasOnClick() {
     return function (e) {
         var {x, y} = getClickCoordinates(e);
         ctx.beginPath();
         ctx.fillStyle = 'black';
-        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        drawPoint(x, y, 5, 0, Math.PI * 2, ctx);
         ctx.fill();
     };
 }
 
 canvas.onclick = canvasOnClick();
 
+function drawPoint(x, y, width, height, diameter, ctx) {
+    ctx.arc(x, y, width, height, diameter);
+    return {x, y, width, height, diameter};
+}
 function readBlobAsDataURLToManageItWithHtml(FR, file) {
     return FR.readAsDataURL(file);
 }
@@ -69,15 +73,12 @@ function drawImage(img, xPos, yPos, width, height) {
 }
 
 
-
 function getClickCoordinates(e) {
 
     var x = e.offsetX;
     var y = e.offsetY;
     return {x, y};
 }
-
-
 
 
 function getFileReader() {
@@ -127,23 +128,38 @@ describe('readImage', function () {
         expect(height).toBe(512);
 
     })
-    it('should prevent loading files when there are none', function (){
+    it('should prevent loading files when there are none', function () {
         let files = {};
         files.files = false;
         expect(isFileToRead(files)).toBe(false);
 
     })
-    it('should accept loading files when there are none', function (){
+    it('should accept loading files when there are none', function () {
         let files = [];
         files.files = [];
         files.files[0] = true;
         expect(isFileToRead(files)).toBe(true);
 
     })
-    it('should read from fileReader to convert it into HTML URL data', function(){
+    it('should read from fileReader to convert it into HTML URL data', function () {
         let file = new Blob;
         let FileR = new FileReader();
         readBlobAsDataURLToManageItWithHtml(FileR, file);
+    })
+    it('should draw a point in the given coordinates', function () {
+        const x = y = height = 0;
+        const width = 5;
+        const diameter = Math.PI * 2;
+        createCanvas();
+        const newX = drawPoint(x, y, width, height, diameter, ctx);
+
+
+        expect(newX.x).toBe(x);
+        expect(newX.y).toBe(y);
+        expect(newX.width).toBe(width);
+        expect(newX.height).toBe(height);
+        expect(newX.diameter).toBe(diameter);
+
     })
     // it('should set image source', function (){
     //     const image = getImage();
