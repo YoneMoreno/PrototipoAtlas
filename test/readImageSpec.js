@@ -26,6 +26,15 @@ function readImage() {
 
 fileUpload.onchange = readImage;
 
+canvas.onclick = function(e) {
+    var x = e.offsetX;
+    var y = e.offsetY;
+    ctx.beginPath();
+    ctx.fillStyle = 'black';
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fill();
+};
+
 
 describe('readImage', function () {
     it('should get context ', function () {
@@ -37,7 +46,7 @@ describe('readImage', function () {
 
         spyOn(window, 'readImage');
 
-        fileUpload.dispatchEvent(new Event('onchange'));
+        fileUpload.onchange();
 
         expect(window.readImage).toHaveBeenCalled();
 
