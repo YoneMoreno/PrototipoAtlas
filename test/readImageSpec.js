@@ -1,9 +1,10 @@
-function getDOM(){
+function getDOM() {
     var fileUpload = document.getElementById('fileUpload');
-    var canvas  = document.getElementById('canvas');
+    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext("2d");
     return [fileUpload, canvas, ctx]
 }
+
 DOM = getDOM();
 fileUpload = DOM[0];
 canvas = DOM[1];
@@ -14,22 +15,30 @@ function setImageSource(img, e) {
     return img;
 }
 
+function drawPoint(img, xPos, yPos, width, height) {
+    let where = img;
+
+    ctx.drawImage(where, xPos, yPos, width, height);
+
+    return {xPos, yPos, width, height};
+}
+
 function fileReaderOnLoad(img) {
     return function (e) {
         setImageSource(img, e);
         //console.log(img.src);
         img.onload = function () {
-            ctx.drawImage(img, 0, 0, 512, 512);
+            drawPoint(img, 0, 0, 512, 512);
         };
     };
 }
 
 function readImage() {
-    if ( this.files && this.files[0] ) {
-        var FR= getFileReader();
+    if (this.files && this.files[0]) {
+        var FR = getFileReader();
         var img = getImage();
         FR.onload = fileReaderOnLoad(img);
-        FR.readAsDataURL( this.files[0] );
+        FR.readAsDataURL(this.files[0]);
     }
     return [this.files, FR, img, ctx];
 }
@@ -57,7 +66,7 @@ canvas.onclick = canvasOnClick();
 
 
 function getFileReader() {
-    const FR= new FileReader();
+    const FR = new FileReader();
     return FR;
 }
 
@@ -72,23 +81,36 @@ describe('readImage', function () {
         expect(ctx).not.toBeNull();
     })
     it('should return a FileReader', function () {
-        const FR =  getFileReader();
+        const FR = getFileReader();
 
         expect(FR instanceof FileReader).toBe(true);
     })
-    it('should return an image', function(){
+    it('should return an image', function () {
         const image = getImage();
 
         expect(image instanceof Image).toBe(true);
     })
-    it('should return return mouse coordinates', function(){
+    it('should return return mouse coordinates', function () {
         var e = {};
         e.offsetX = 100;
         e.offsetY = 100;
-        const { x, y} = getClickCoordinates(e);
+        const {x, y} = getClickCoordinates(e);
 
         expect(x).toBe(100);
         expect(y).toBe(100);
+    })
+    it('should draw point on coordinates', function () {
+        img = new Image();
+        xPos = yPos = 0;
+        width = height = 512;
+
+        drawPoint(img, xPos, yPos, width, height);
+
+        expect(xPos).toBe(0);
+        expect(yPos).toBe(0);
+        expect(width).toBe(512);
+        expect(height).toBe(512);
+
     })
     // it('should set image source', function (){
     //     const image = getImage();
