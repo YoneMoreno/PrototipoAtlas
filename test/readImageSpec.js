@@ -161,25 +161,18 @@ describe('readImage', function () {
         expect(newX.diameter).toBe(diameter);
 
     })
-    // it('should set image source', function (){
-    //     const image = getImage();
-    //     const event = {progressEvent: jasmine.createSpy()};
-    //     event.target = {};
-    //     event.target.result = true;
-    //     console.log(event);
-    //
-    //     setImageSource(image, event);
-    //
-    //     expect(image.src).isNot(undefined);
-    // })
-    // it('should get at least one file ', function () {
-    //
-    //     spyOn(window, 'readImage');
-    //
-    //     fileUpload.onchange();
-    //
-    //     expect(window.readImage).toHaveBeenCalled();
-    //
-    // })
+    it('should have a fileUpload input before call readImage ', function () {
+        body = document.getElementsByTagName("BODY")[0];
+        upload = document.createElement("input");
+        upload.setAttribute("type", "file");
+        upload.setAttribute("id", "fileUpload");
+        body.appendChild(upload);
+
+        readImage();
+        currentFileUpload = document.getElementById('fileUpload');
+
+        expect(currentFileUpload.toString()).toBe(upload.toString());
+
+    })
 
 });
