@@ -13,7 +13,8 @@ ctx = DOM[2];
 
 
 function readImage() {
-    if (isFileToRead.call(this)) {
+
+    if (isFileToRead(this)) {
         var FR = getFileReader();
         var img = getImage();
         FR.onload = fileReaderOnLoad(img);
@@ -22,8 +23,8 @@ function readImage() {
     return [this.files, FR, img, ctx];
 }
 
-function isFileToRead() {
-    return this.files && this.files[0];
+function isFileToRead(object) {
+    return object.files && object.files[0];
 }
 
 function setImageSource(img, e) {
@@ -120,8 +121,16 @@ describe('readImage', function () {
 
     })
     it('should prevent loading files when there are none', function (){
-        this.files = false;
-        expect(isFileToRead.call(this)).toBe(false);
+        let files = {};
+        files.files = false;
+        expect(isFileToRead(files)).toBe(false);
+
+    })
+    it('should accept loading files when there are none', function (){
+        let files = [];
+        files.files = [];
+        files.files[0] = true;
+        expect(isFileToRead(files)).toBe(true);
 
     })
     // it('should set image source', function (){
