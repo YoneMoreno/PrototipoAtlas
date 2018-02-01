@@ -11,6 +11,9 @@ canvas = DOM[1];
 ctx = DOM[2];
 
 
+function readBlobAsDataURLToManageItWithHtml(FR, file) {
+    return FR.readAsDataURL(file);
+}
 
 function readImage() {
 
@@ -18,7 +21,7 @@ function readImage() {
         var FR = getFileReader();
         var img = getImage();
         FR.onload = fileReaderOnLoad(img);
-        FR.readAsDataURL(this.files[0]);
+        readBlobAsDataURLToManageItWithHtml(FR,this.files[0]);
     }
     return [this.files, FR, img, ctx];
 }
@@ -132,6 +135,11 @@ describe('readImage', function () {
         files.files[0] = true;
         expect(isFileToRead(files)).toBe(true);
 
+    })
+    it('should read from fileReader to convert it into HTML URL data', function(){
+        let file = new Blob;
+        let FileR = new FileReader();
+        readBlobAsDataURLToManageItWithHtml(FileR, file);
     })
     // it('should set image source', function (){
     //     const image = getImage();
