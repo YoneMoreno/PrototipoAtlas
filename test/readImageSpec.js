@@ -11,12 +11,9 @@ canvas = DOM[1];
 ctx = DOM[2];
 
 
-function readBlobAsDataURLToManageItWithHtml(FR, file) {
-    return FR.readAsDataURL(file);
-}
+
 
 function readImage() {
-
     if (isFileToRead(this)) {
         var FR = getFileReader();
         var img = getImage();
@@ -25,43 +22,18 @@ function readImage() {
     }
     return [this.files, FR, img, ctx];
 }
-
-function isFileToRead(object) {
-    return object.files && object.files[0];
-}
-
-function setImageSource(img, e) {
-    img.src = e.target.result;
-    return img;
-}
-
-function drawPoint(img, xPos, yPos, width, height) {
-    let where = img;
-
-    ctx.drawImage(where, xPos, yPos, width, height);
-
-    return {xPos, yPos, width, height};
-}
-
 function fileReaderOnLoad(img) {
     return function (e) {
         setImageSource(img, e);
         //console.log(img.src);
         img.onload = function () {
-            drawPoint(img, 0, 0, 512, 512);
+            drawImage(img, 0, 0, 512, 512);
         };
     };
 }
 
 
 fileUpload.onchange = readImage;
-
-function getClickCoordinates(e) {
-
-    var x = e.offsetX;
-    var y = e.offsetY;
-    return {x, y};
-}
 
 function canvasOnClick() {
     return function (e) {
@@ -74,6 +46,38 @@ function canvasOnClick() {
 }
 
 canvas.onclick = canvasOnClick();
+
+function readBlobAsDataURLToManageItWithHtml(FR, file) {
+    return FR.readAsDataURL(file);
+}
+
+function isFileToRead(object) {
+    return object.files && object.files[0];
+}
+
+function setImageSource(img, e) {
+    img.src = e.target.result;
+    return img;
+}
+
+function drawImage(img, xPos, yPos, width, height) {
+    let where = img;
+
+    ctx.drawImage(where, xPos, yPos, width, height);
+
+    return {xPos, yPos, width, height};
+}
+
+
+
+function getClickCoordinates(e) {
+
+    var x = e.offsetX;
+    var y = e.offsetY;
+    return {x, y};
+}
+
+
 
 
 function getFileReader() {
@@ -115,7 +119,7 @@ describe('readImage', function () {
         xPos = yPos = 0;
         width = height = 512;
 
-        drawPoint(img, xPos, yPos, width, height);
+        drawImage(img, xPos, yPos, width, height);
 
         expect(xPos).toBe(0);
         expect(yPos).toBe(0);
