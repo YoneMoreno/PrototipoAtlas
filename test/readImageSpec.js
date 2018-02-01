@@ -11,7 +11,7 @@ ctx = DOM[2];
 
 function readImage() {
     if ( this.files && this.files[0] ) {
-        var FR= new FileReader();
+        var FR= getFileReader();
         var img = new Image();
         FR.onload = function(e) {
             img.src = e.target.result;
