@@ -9,9 +9,15 @@ fileUpload = DOM[0];
 canvas = DOM[1];
 ctx = DOM[2];
 
+function setImageSource(img, e) {
+    img.src = e.target.result;
+    return img;
+}
+
 function fileReaderOnLoad(img) {
     return function (e) {
-        img.src = e.target.result;
+        setImageSource(img, e);
+        //console.log(img.src);
         img.onload = function () {
             ctx.drawImage(img, 0, 0, 512, 512);
         };
@@ -30,14 +36,24 @@ function readImage() {
 
 fileUpload.onchange = readImage;
 
-canvas.onclick = function(e) {
+function getClickCoordinates(e) {
+
     var x = e.offsetX;
     var y = e.offsetY;
-    ctx.beginPath();
-    ctx.fillStyle = 'black';
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
-    ctx.fill();
-};
+    return {x, y};
+}
+
+function canvasOnClick() {
+    return function (e) {
+        var {x, y} = getClickCoordinates(e);
+        ctx.beginPath();
+        ctx.fillStyle = 'black';
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fill();
+    };
+}
+
+canvas.onclick = canvasOnClick();
 
 
 function getFileReader() {
@@ -65,6 +81,26 @@ describe('readImage', function () {
 
         expect(image instanceof Image).toBe(true);
     })
+    it('should return return mouse coordinates', function(){
+        var e = {};
+        e.offsetX = 100;
+        e.offsetY = 100;
+        const { x, y} = getClickCoordinates(e);
+
+        expect(x).toBe(100);
+        expect(y).toBe(100);
+    })
+    // it('should set image source', function (){
+    //     const image = getImage();
+    //     const event = {progressEvent: jasmine.createSpy()};
+    //     event.target = {};
+    //     event.target.result = true;
+    //     console.log(event);
+    //
+    //     setImageSource(image, event);
+    //
+    //     expect(image.src).isNot(undefined);
+    // })
     // it('should get at least one file ', function () {
     //
     //     spyOn(window, 'readImage');
