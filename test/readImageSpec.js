@@ -10,6 +10,22 @@ fileUpload = DOM[0];
 canvas = DOM[1];
 ctx = DOM[2];
 
+
+
+function readImage() {
+    if (isFileToRead.call(this)) {
+        var FR = getFileReader();
+        var img = getImage();
+        FR.onload = fileReaderOnLoad(img);
+        FR.readAsDataURL(this.files[0]);
+    }
+    return [this.files, FR, img, ctx];
+}
+
+function isFileToRead() {
+    return this.files && this.files[0];
+}
+
 function setImageSource(img, e) {
     img.src = e.target.result;
     return img;
@@ -33,15 +49,6 @@ function fileReaderOnLoad(img) {
     };
 }
 
-function readImage() {
-    if (this.files && this.files[0]) {
-        var FR = getFileReader();
-        var img = getImage();
-        FR.onload = fileReaderOnLoad(img);
-        FR.readAsDataURL(this.files[0]);
-    }
-    return [this.files, FR, img, ctx];
-}
 
 fileUpload.onchange = readImage;
 
@@ -110,6 +117,11 @@ describe('readImage', function () {
         expect(yPos).toBe(0);
         expect(width).toBe(512);
         expect(height).toBe(512);
+
+    })
+    it('should prevent loading files when there are none', function (){
+        this.files = false;
+        expect(isFileToRead.call(this)).toBe(false);
 
     })
     // it('should set image source', function (){
