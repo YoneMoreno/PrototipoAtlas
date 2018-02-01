@@ -36,11 +36,21 @@ canvas.onclick = function(e) {
 };
 
 
+function getFileReader() {
+    const FR= new FileReader();
+    return FR;
+}
+
 describe('readImage', function () {
     it('should get context ', function () {
         DOM = getDOM();
         ctx = DOM[2];
         expect(ctx).not.toBeNull();
+    })
+    it('should return a FileReader', function () {
+        const FR =  getFileReader();
+
+        expect(FR instanceof FileReader).toBe(true);
     })
     // it('should get at least one file ', function () {
     //
