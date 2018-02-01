@@ -42,14 +42,14 @@ describe('readImage', function () {
         ctx = DOM[2];
         expect(ctx).not.toBeNull();
     })
-    it('should get at least one file ', function () {
-
-        spyOn(window, 'readImage');
-
-        fileUpload.onchange();
-
-        expect(window.readImage).toHaveBeenCalled();
-
-    })
+    // it('should get at least one file ', function () {
+    //
+    //     spyOn(window, 'readImage');
+    //
+    //     fileUpload.onchange();
+    //
+    //     expect(window.readImage).toHaveBeenCalled();
+    //
+    // })
 
 });
