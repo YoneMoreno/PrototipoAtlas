@@ -38,6 +38,7 @@ fileUpload.onchange = readImage;
 function canvasOnClick() {
     return function (e) {
         var {x, y} = getClickCoordinates(e);
+        console.log("Window x: " + x + " window y: " + y);
         ctx.beginPath();
         ctx.fillStyle = 'black';
         drawPoint(x, y, 5, 0, Math.PI * 2, ctx);
@@ -51,6 +52,7 @@ function drawPoint(x, y, width, height, diameter, ctx) {
     ctx.arc(x, y, width, height, diameter);
     return {x, y, width, height, diameter};
 }
+
 function readBlobAsDataURLToManageItWithHtml(FR, file) {
     return FR.readAsDataURL(file);
 }
